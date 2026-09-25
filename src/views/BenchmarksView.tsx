@@ -12,7 +12,8 @@ import {
 import { 
   TrendingDown, 
   Clock, 
-  DollarSign, 
+  DollarSign,
+  IndianRupee,
   Users, 
   Zap, 
   ChevronRight, 
@@ -25,13 +26,15 @@ export const BenchmarksView: React.FC = () => {
   const { benchmarkMetrics } = useWorkflow();
   const { manual, devflow } = benchmarkMetrics;
 
-  const [hourlyRate, setHourlyRate] = useState<number>(120);
+  const [currency, setCurrency] = useState<'INR' | 'USD'>('INR');
+  const [hourlyRateINR, setHourlyRateINR] = useState<number>(3500);
   const [incidentsPerMonth, setIncidentsPerMonth] = useState<number>(15);
   const [teamSize, setTeamSize] = useState<number>(8);
 
   const hoursSavedPerIncident = (manual.totalTimeMin - devflow.totalTimeMin) / 60;
   const monthlyHoursSaved = hoursSavedPerIncident * incidentsPerMonth;
-  const annualDollarsSaved = Math.round(monthlyHoursSaved * 12 * hourlyRate);
+  const annualSavingsINR = Math.round(monthlyHoursSaved * 12 * hourlyRateINR);
+  const annualSavingsUSD = Math.round(annualSavingsINR / 86.5);
 
   const chartData = [
     { stage: 'Investigation', manual: manual.investigationTimeMin, devflow: devflow.investigationTimeMin },
@@ -116,14 +119,22 @@ export const BenchmarksView: React.FC = () => {
 
         <div className="card-cyber p-4">
           <div className="text-xs font-mono text-cyber-muted mb-1 flex items-center space-x-1.5">
-            <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+            {currency === 'INR' ? (
+              <IndianRupee className="w-3.5 h-3.5 text-emerald-400" />
+            ) : (
+              <DollarSign className="w-3.5 h-3.5 text-emerald-400" />
+            )}
             <span>Est. Annual Savings</span>
           </div>
           <div className="text-3xl font-bold text-emerald-400 font-mono">
-            ${(annualDollarsSaved / 1000).toFixed(0)}k/yr
+            {currency === 'INR'
+              ? `₹${(annualSavingsINR / 100000).toFixed(1)}L/yr`
+              : `$${(annualSavingsUSD / 1000).toFixed(0)}k/yr`}
           </div>
           <div className="text-xs text-cyber-muted mt-1 font-mono">
-            Based on current calculator params
+            {currency === 'INR'
+              ? `₹${(annualSavingsINR / 10000000).toFixed(2)} Cr · ${monthlyHoursSaved * 12}h saved`
+              : `Based on current calculator params`}
           </div>
         </div>
       </div>
@@ -192,27 +203,59 @@ export const BenchmarksView: React.FC = () => {
 
         {/* Right Col: Interactive ROI Calculator */}
         <div className="card-cyber p-5 space-y-5">
-          <div className="border-b border-cyber-border/40 pb-3">
-            <h3 className="text-sm font-semibold text-white font-mono flex items-center space-x-2">
-              <DollarSign className="w-4 h-4 text-emerald-400" />
-              <span>Interactive ROI Calculator</span>
-            </h3>
-            <p className="text-xs text-cyber-muted mt-0.5">Simulate cost and time savings for your team</p>
+          <div className="border-b border-cyber-border/40 pb-3 flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold text-white font-mono flex items-center space-x-2">
+                <IndianRupee className="w-4 h-4 text-emerald-400" />
+                <span>Interactive ROI Calculator</span>
+              </h3>
+              <p className="text-xs text-cyber-muted mt-0.5">Simulate cost and time savings for your team</p>
+            </div>
+
+            {/* Currency Switcher */}
+            <div className="flex items-center bg-[#071522] border border-[rgba(148,163,184,0.2)] rounded-lg p-0.5 text-[11px] font-mono shrink-0">
+              <button
+                onClick={() => setCurrency('INR')}
+                className={`px-2 py-0.5 rounded transition-all font-bold ${
+                  currency === 'INR'
+                    ? 'bg-emerald-500 text-[#06111F]'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                ₹ INR
+              </button>
+              <button
+                onClick={() => setCurrency('USD')}
+                className={`px-2 py-0.5 rounded transition-all font-bold ${
+                  currency === 'USD'
+                    ? 'bg-emerald-500 text-[#06111F]'
+                    : 'text-slate-400 hover:text-white'
+                }`}
+              >
+                $ USD
+              </button>
+            </div>
           </div>
 
           <div className="space-y-4">
             <div>
               <div className="flex justify-between text-xs font-mono mb-1.5">
-                <span className="text-cyber-muted">Dev Blended Rate ($/hr)</span>
-                <span className="text-cyan-400 font-bold">${hourlyRate}/hr</span>
+                <span className="text-cyber-muted">
+                  Dev Blended Rate ({currency === 'INR' ? '₹/hr' : '$/hr'})
+                </span>
+                <span className="text-cyan-400 font-bold">
+                  {currency === 'INR'
+                    ? `₹${hourlyRateINR.toLocaleString('en-IN')}/hr`
+                    : `$${Math.round(hourlyRateINR / 86.5)}/hr`}
+                </span>
               </div>
               <input
                 type="range"
-                min="50"
-                max="250"
-                step="5"
-                value={hourlyRate}
-                onChange={(e) => setHourlyRate(+e.target.value)}
+                min="500"
+                max="15000"
+                step="250"
+                value={hourlyRateINR}
+                onChange={(e) => setHourlyRateINR(+e.target.value)}
                 className="w-full accent-cyan-400 cursor-pointer"
               />
             </div>
@@ -261,8 +304,19 @@ export const BenchmarksView: React.FC = () => {
               <span className="text-cyan-400 font-bold">~{((monthlyHoursSaved / 160)).toFixed(1)} Full-Time Devs</span>
             </div>
             <div className="pt-2 border-t border-cyber-border/60 flex items-center justify-between">
-              <span className="text-xs text-emerald-400 font-semibold">Net Annual Value:</span>
-              <span className="text-lg font-bold text-emerald-400">${annualDollarsSaved.toLocaleString()}</span>
+              <div>
+                <span className="text-xs text-emerald-400 font-semibold block">Net Annual Value:</span>
+                <span className="text-[10px] text-slate-400">
+                  {currency === 'INR'
+                    ? `(₹${(annualSavingsINR / 100000).toFixed(2)} Lakhs / ₹${(annualSavingsINR / 10000000).toFixed(2)} Cr)`
+                    : `(≈ ₹${(annualSavingsINR / 100000).toFixed(1)} Lakhs)`}
+                </span>
+              </div>
+              <span className="text-lg font-bold text-emerald-400">
+                {currency === 'INR'
+                  ? `₹${annualSavingsINR.toLocaleString('en-IN')}`
+                  : `$${annualSavingsUSD.toLocaleString()}`}
+              </span>
             </div>
           </div>
         </div>

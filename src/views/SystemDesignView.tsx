@@ -340,15 +340,15 @@ export const SystemDesignView: React.FC = () => {
             <div className="bg-[#071522] border border-[rgba(148,163,184,0.15)] rounded-xl p-4">
               <div className="text-[10px] font-mono text-slate-400 uppercase">Cost Per Analyzed PR</div>
               <div className="text-2xl font-bold font-mono text-purple-400 mt-1">
-                ${estimatedCostPerPR}
+                ₹{(parseFloat(estimatedCostPerPR) * 86.5).toFixed(2)}
               </div>
-              <div className="text-[11px] text-slate-400 mt-1">Compute & token inference</div>
+              <div className="text-[11px] text-slate-400 mt-1">Compute & token inference (₹ INR)</div>
             </div>
 
             <div className="bg-[#071522] border border-[rgba(148,163,184,0.15)] rounded-xl p-4">
               <div className="text-[10px] font-mono text-slate-400 uppercase">Annual Engineer Savings</div>
               <div className="text-2xl font-bold font-mono text-amber-400 mt-1">
-                ${(totalDollarSavingsAnnual / 1000000).toFixed(2)}M
+                ₹{((totalDollarSavingsAnnual * 86.5) / 10000000).toFixed(2)} Cr
               </div>
               <div className="text-[11px] text-slate-400 mt-1">
                 {totalEngineerHoursSavedAnnual.toLocaleString()} hours saved/yr
