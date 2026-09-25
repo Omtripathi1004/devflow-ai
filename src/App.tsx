@@ -28,6 +28,7 @@ import { SettingsView } from './views/SettingsView';
 import { ProjectProgressView } from './views/ProjectProgressView';
 import { GeminiChatView } from './views/GeminiChatView';
 import { AuthView } from './views/AuthView';
+import { AntiGravityView } from './views/AntiGravityView';
 
 const MainLayout: React.FC = () => {
   const { activeTab, isFolderModalOpen, setIsFolderModalOpen } = useWorkflow();
@@ -36,6 +37,8 @@ const MainLayout: React.FC = () => {
     switch (activeTab) {
       case 'overview':
         return <OverviewView />;
+      case 'antigravity':
+        return <AntiGravityView />;
       case 'project_progress':
         return <ProjectProgressView />;
       case 'gemini_chat':

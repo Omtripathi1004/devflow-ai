@@ -219,6 +219,20 @@ export const Header: React.FC = () => {
           <RotateCcw className="w-4 h-4" />
         </button>
 
+        {/* Anti-Gravity 9.5 Spec Quick Launch */}
+        <button
+          onClick={() => setActiveTab('antigravity')}
+          className={`px-2.5 py-1.5 rounded-lg border text-xs font-semibold font-mono flex items-center gap-1.5 transition-all shadow-sm ${
+            activeTab === 'antigravity'
+              ? 'bg-[#10B981]/20 text-[#10B981] border-[#10B981] shadow-[#10B981]/20'
+              : 'bg-[#0D2135] hover:bg-[#102A43] text-emerald-400 hover:text-emerald-300 border-[#10B981]/30'
+          }`}
+          title="Open Anti-Gravity 9.5/10 Linear Execution Pipeline"
+        >
+          <Zap className="w-3.5 h-3.5 text-[#10B981] fill-[#10B981]" />
+          <span className="hidden md:inline">Anti-Gravity 9.5</span>
+        </button>
+
         {/* Gemini Chat Quick Launch */}
         <button
           onClick={() => setActiveTab('gemini_chat')}

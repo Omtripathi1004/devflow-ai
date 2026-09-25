@@ -40,6 +40,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   // Core Orchestration
   { id: 'overview', label: 'Overview', icon: LayoutDashboard, category: 'core' },
+  { id: 'antigravity', label: 'Anti-Gravity Engine', icon: Zap, badge: '9.5/10 Spec', badgeColor: 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40', category: 'core' },
   { id: 'project_progress', label: 'Project Progress Radar', icon: Gauge, badge: '96% Ready', badgeColor: 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40', category: 'core' },
   { id: 'gemini_chat', label: 'Gemini 2.5 Flash Chat', icon: MessageSquare, badge: 'Multi-Day', badgeColor: 'bg-emerald-950/80 text-emerald-300 border-emerald-500/40', category: 'core' },
   { id: 'workflows', label: 'Workflow Graph', icon: GitFork, badge: 'Live', badgeColor: 'bg-cyan-950/80 text-cyan-300 border-cyan-500/40', category: 'core' },

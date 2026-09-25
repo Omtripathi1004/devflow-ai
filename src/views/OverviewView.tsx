@@ -67,6 +67,14 @@ export const OverviewView: React.FC = () => {
 
           <div className="pt-2 flex flex-wrap items-center gap-3">
             <button
+              onClick={() => setActiveTab('antigravity')}
+              className="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold font-mono tracking-wide text-[#090D16] bg-[#10B981] hover:bg-[#059669] flex items-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.35)] active:scale-95 transition-all"
+            >
+              <Zap className="w-4 h-4 text-[#090D16] fill-[#090D16]" />
+              <span>Anti-Gravity 9.5 Engine (Spec)</span>
+            </button>
+
+            <button
               onClick={startDemoWorkflow}
               disabled={workflowStatus === 'running'}
               className="btn-cyber-primary text-xs sm:text-sm flex items-center gap-2 active:scale-95 disabled:opacity-50"
@@ -92,6 +100,31 @@ export const OverviewView: React.FC = () => {
             </button>
           </div>
         </div>
+      </div>
+
+      {/* Anti-Gravity 9.5/10 Execution Banner */}
+      <div className="p-4 sm:p-5 rounded-2xl bg-[#090D16] border border-[#10B981]/40 shadow-xl flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+        <div className="space-y-1 max-w-2xl">
+          <div className="flex items-center space-x-2">
+            <span className="text-xs font-mono font-bold text-[#10B981] flex items-center space-x-1.5">
+              <Zap className="w-3.5 h-3.5 text-[#10B981]" />
+              <span>ANTI-GRAVITY: 9.5/10 ARCHITECTURE & SPECIFICATION READY</span>
+            </span>
+            <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/40">
+              DE-CLUTTER MANIFEST
+            </span>
+          </div>
+          <p className="text-xs text-slate-300">
+            Replaces spaghetti node graphs and raw terminal streams with a <strong>Linear 3-Step Execution Pipeline</strong> (Cloned Context &rarr; Evaluation &rarr; Pull Request Staging), Fastify + BullMQ Redis asynchronous queues, and an isolated slide-out diagnostic drawer.
+          </p>
+        </div>
+        <button
+          onClick={() => setActiveTab('antigravity')}
+          className="px-4 py-2 rounded-xl text-xs font-mono font-bold text-[#090D16] bg-[#10B981] hover:bg-[#059669] flex items-center space-x-1.5 shrink-0 transition-colors shadow-[0_0_12px_rgba(16,185,129,0.25)]"
+        >
+          <span>Launch 9.5/10 Pipeline</span>
+          <ArrowRight className="w-3.5 h-3.5 text-[#090D16]" />
+        </button>
       </div>
 
       {/* KPI Intelligence Cards Grid */}

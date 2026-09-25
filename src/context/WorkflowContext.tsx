@@ -36,6 +36,7 @@ import {
 
 export type NavigationTab =
   | 'overview'
+  | 'antigravity'
   | 'project_progress'
   | 'gemini_chat'
   | 'auth'
