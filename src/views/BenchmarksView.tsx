@@ -267,6 +267,83 @@ export const BenchmarksView: React.FC = () => {
           </div>
         </div>
       </div>
+
+      {/* PDF Section 9: Quantitative Impact & ROI Analysis */}
+      <div className="card-cyber p-6 space-y-4 border border-cyan-500/30">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-cyber-border/40 pb-3">
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/40">
+                PDF SPECIFICATION §9
+              </span>
+              <h3 className="text-base font-bold text-white font-mono">
+                Quantitative Impact & ROI Analysis (Bob 2.0 Benchmark)
+              </h3>
+            </div>
+            <p className="text-xs text-cyber-muted mt-0.5">
+              Deploying DevFlow AI powered by IBM Bob 2.0 yields measurable productivity enhancements across all engineering operations.
+            </p>
+          </div>
+          <span className="text-xs font-mono text-emerald-400 font-bold bg-emerald-950/60 border border-emerald-500/30 px-3 py-1 rounded-lg">
+            NET PRODUCTIVITY BOOST
+          </span>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs font-mono">
+            <thead>
+              <tr className="border-b border-slate-800 text-slate-400 text-[11px]">
+                <th className="py-2.5 px-3">Metric Benchmark</th>
+                <th className="py-2.5 px-3">Traditional Workflow</th>
+                <th className="py-2.5 px-3">With DevFlow AI + Bob 2.0</th>
+                <th className="py-2.5 px-3 text-right">Net Productivity Gain</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-800/60">
+              <tr className="hover:bg-[#071522] transition-colors">
+                <td className="py-3 px-3 font-bold text-white">Pull Request Cycle Time</td>
+                <td className="py-3 px-3 text-rose-400">3.5 Days (84 Hours)</td>
+                <td className="py-3 px-3 text-emerald-400 font-bold">0.5 Days (12 Hours)</td>
+                <td className="py-3 px-3 text-right">
+                  <span className="px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-500/40 font-bold">
+                    7x Faster Velocity
+                  </span>
+                </td>
+              </tr>
+              <tr className="hover:bg-[#071522] transition-colors">
+                <td className="py-3 px-3 font-bold text-white">Unit Test Coverage</td>
+                <td className="py-3 px-3 text-slate-400">~45% Average</td>
+                <td className="py-3 px-3 text-emerald-400 font-bold">&gt;85% Automated</td>
+                <td className="py-3 px-3 text-right">
+                  <span className="px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/40 font-bold">
+                    +40% Coverage Boost
+                  </span>
+                </td>
+              </tr>
+              <tr className="hover:bg-[#071522] transition-colors">
+                <td className="py-3 px-3 font-bold text-white">Architectural Spec Drift</td>
+                <td className="py-3 px-3 text-rose-400">High (Manual Checks, 42%)</td>
+                <td className="py-3 px-3 text-emerald-400 font-bold">Zero (PDF-driven checks)</td>
+                <td className="py-3 px-3 text-right">
+                  <span className="px-2 py-0.5 rounded bg-purple-950 text-purple-300 border border-purple-500/40 font-bold">
+                    100% Compliance
+                  </span>
+                </td>
+              </tr>
+              <tr className="hover:bg-[#071522] transition-colors">
+                <td className="py-3 px-3 font-bold text-white">Developer Onboarding Time</td>
+                <td className="py-3 px-3 text-slate-400">21 Days to 1st PR</td>
+                <td className="py-3 px-3 text-emerald-400 font-bold">3 Days to 1st PR</td>
+                <td className="py-3 px-3 text-right">
+                  <span className="px-2 py-0.5 rounded bg-teal-950 text-teal-300 border border-teal-500/40 font-bold">
+                    85% Onboarding Reduction
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 };

@@ -15,7 +15,9 @@ import {
   ReleaseCenterModel,
   BenchmarkMetrics,
   ActivityEvent,
+  UserProfile,
 } from '../types';
+import { AuthService } from '../services/authService';
 import {
   initialIssue,
   initialAgents,
@@ -34,7 +36,12 @@ import {
 
 export type NavigationTab =
   | 'overview'
+  | 'project_progress'
+  | 'gemini_chat'
+  | 'auth'
   | 'workflows'
+  | 'automation'
+  | 'copilot'
   | 'issues'
   | 'agents'
   | 'repository'
@@ -44,6 +51,8 @@ export type NavigationTab =
   | 'tests'
   | 'review'
   | 'security'
+  | 'system_design'
+  | 'public_apis'
   | 'release'
   | 'benchmarks'
   | 'activity'
@@ -52,6 +61,8 @@ export type NavigationTab =
 interface WorkflowContextType {
   activeTab: NavigationTab;
   setActiveTab: (tab: NavigationTab) => void;
+  currentUser: UserProfile;
+  setCurrentUser: (user: UserProfile) => void;
   selectedAgentId: string | null;
   setSelectedAgentId: (id: string | null) => void;
   selectedDocId: string | null;
@@ -60,6 +71,8 @@ interface WorkflowContextType {
   setSelectedFilePath: (path: string | null) => void;
   isJudgeModalOpen: boolean;
   setIsJudgeModalOpen: (open: boolean) => void;
+  isMobileMenuOpen: boolean;
+  setIsMobileMenuOpen: (open: boolean) => void;
 
   workflowStatus: WorkflowStatus;
   currentStageId: StageId | null;
@@ -106,10 +119,12 @@ const WorkflowContext = createContext<WorkflowContextType | undefined>(undefined
 
 export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [activeTab, setActiveTab] = useState<NavigationTab>('overview');
+  const [currentUser, setCurrentUser] = useState<UserProfile>(() => AuthService.getCurrentUser());
   const [selectedAgentId, setSelectedAgentId] = useState<string | null>(null);
   const [selectedDocId, setSelectedDocId] = useState<string | null>('doc-readme');
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>('src/services/csvUploadService.ts');
   const [isJudgeModalOpen, setIsJudgeModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [workflowStatus, setWorkflowStatus] = useState<WorkflowStatus>('completed');
   const [currentStageId, setCurrentStageId] = useState<StageId | null>('release');
@@ -456,6 +471,8 @@ export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       value={{
         activeTab,
         setActiveTab,
+        currentUser,
+        setCurrentUser,
         selectedAgentId,
         setSelectedAgentId,
         selectedDocId,
@@ -464,6 +481,8 @@ export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setSelectedFilePath,
         isJudgeModalOpen,
         setIsJudgeModalOpen,
+        isMobileMenuOpen,
+        setIsMobileMenuOpen,
         workflowStatus,
         currentStageId,
         runId,

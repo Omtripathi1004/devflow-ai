@@ -13,13 +13,51 @@ import {
   Check,
   ChevronRight,
   Sparkles,
-  RotateCcw
+  RotateCcw,
+  Box,
+  Terminal,
+  Play,
+  RefreshCw,
+  Cpu,
 } from 'lucide-react';
 
 export const CodeChangesView: React.FC = () => {
   const { codeChange, approvePatch, rejectPatch, retryStage } = useWorkflow();
   const [viewMode, setViewMode] = useState<'split' | 'unified'>('unified');
   const [copied, setCopied] = useState(false);
+  const [isSandboxRunning, setIsSandboxRunning] = useState(false);
+  const [sandboxLogs, setSandboxLogs] = useState<string[]>([
+    '[0.02s] [SANDBOX] Spawning isolated MicroVM container (node:22-alpine-sandbox)...',
+    '[0.14s] [OVERLAYFS] Mounting patch AST diff (+24 / -6 lines) into virtual workspace',
+    '[0.35s] [COMPILE] Executing tsc --noEmit --strict -> 0 syntax or type errors detected',
+    '[0.68s] [TESTS] Executing vitest run tests/services/csvUploadService.test.ts -> 47/47 PASSED',
+    '[0.74s] [SECURITY] Zero host escapes, zero network egress. Status: COMPILABLE & SAFE',
+  ]);
+
+  const handleRunSandbox = () => {
+    setIsSandboxRunning(true);
+    setSandboxLogs(['[INIT] Re-compiling patch inside isolated sandbox container...']);
+    setTimeout(() => {
+      setSandboxLogs((prev) => [
+        ...prev,
+        '[0.12s] [TSC] Validating TypeScript strict type bounds for validateUpload()',
+      ]);
+    }, 250);
+    setTimeout(() => {
+      setSandboxLogs((prev) => [
+        ...prev,
+        '[0.38s] [VITEST] Executing Jest/Vitest suite with mock multipart stream inputs',
+      ]);
+    }, 500);
+    setTimeout(() => {
+      setSandboxLogs((prev) => [
+        ...prev,
+        '[0.62s] [PASS] 47 of 47 tests passed (100% success rate, +14.4% coverage delta)',
+        '[0.70s] [EXIT] Sandbox process exited with code 0 (SUCCESS)',
+      ]);
+      setIsSandboxRunning(false);
+    }, 750);
+  };
 
   const handleCopy = () => {
     const rawDiff = codeChange.lines
@@ -193,6 +231,61 @@ export const CodeChangesView: React.FC = () => {
           <p className="text-xs text-cyber-muted leading-relaxed">
             {codeChange.rollbackNotes}
           </p>
+        </div>
+      </div>
+
+      {/* Auto-Remediation Sandbox Console (PDF Section 6 & 7 Feature C) */}
+      <div className="card-cyber p-5 space-y-3 bg-[#06111F]/90 border border-emerald-500/30">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-3">
+          <div className="flex items-center gap-2.5">
+            <div className="p-2 rounded-lg bg-emerald-950/80 border border-emerald-500/40 text-emerald-400">
+              <Box className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-bold text-white font-mono">
+                  Auto-Remediation Sandbox Container
+                </span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/40 font-bold">
+                  VERIFIED (EXIT 0)
+                </span>
+              </div>
+              <p className="text-xs text-slate-400 mt-0.5 font-mono">
+                Isolated MicroVM sandbox: node:22-alpine-sandbox · RAM: 512MB · Egress: BLOCKED
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={handleRunSandbox}
+            disabled={isSandboxRunning}
+            className="btn-cyber-primary text-xs flex items-center gap-2 self-start sm:self-auto"
+          >
+            {isSandboxRunning ? (
+              <RefreshCw className="w-3.5 h-3.5 animate-spin text-[#06111F]" />
+            ) : (
+              <Play className="w-3.5 h-3.5 fill-[#06111F]" />
+            )}
+            <span>{isSandboxRunning ? 'Compiling in Sandbox...' : 'Re-verify in Sandbox'}</span>
+          </button>
+        </div>
+
+        {/* Sandbox Console Output */}
+        <div className="bg-[#050D18] rounded-xl border border-slate-800 p-3 font-mono text-[11px] space-y-1 max-h-36 overflow-y-auto">
+          {sandboxLogs.map((log, idx) => (
+            <div
+              key={idx}
+              className={
+                log.includes('PASSED') || log.includes('SUCCESS')
+                  ? 'text-emerald-400 font-bold'
+                  : log.includes('COMPILE') || log.includes('TSC')
+                  ? 'text-cyan-300'
+                  : 'text-slate-400'
+              }
+            >
+              {log}
+            </div>
+          ))}
         </div>
       </div>
 

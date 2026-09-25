@@ -14,6 +14,10 @@ import {
   Clock,
   Layers,
   Activity,
+  Workflow,
+  Cpu,
+  Globe,
+  BookOpen,
 } from 'lucide-react';
 
 export const OverviewView: React.FC = () => {
@@ -461,6 +465,98 @@ export const OverviewView: React.FC = () => {
             >
               All 9 Agents →
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Enterprise Multi-Agent Capability Grid */}
+      <div className="card-cyber p-5 space-y-4">
+        <div className="flex items-center justify-between border-b border-cyber-border/40 pb-3">
+          <div>
+            <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider flex items-center gap-2">
+              <Sparkles className="w-4 h-4 text-cyan-400" />
+              <span>DevFlow AI × IBM Bob 2.0 Extended Engines</span>
+            </h3>
+            <p className="text-xs text-[#94A3B8] mt-0.5">
+              Direct access to automation pipelines, multi-model advisory, PDF spec guard, and distributed scalability.
+            </p>
+          </div>
+          <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950 text-cyan-300 border border-cyan-500/30">
+            5 CORE CAPABILITIES
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div
+            onClick={() => setActiveTab('automation')}
+            className="p-4 rounded-xl bg-[#06111F] border border-[rgba(148,163,184,0.15)] hover:border-fuchsia-500/60 cursor-pointer transition-all group"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-lg bg-fuchsia-950/60 text-fuchsia-400 border border-fuchsia-500/30">
+                <Workflow className="w-4 h-4" />
+              </div>
+              <span className="text-[10px] font-mono text-fuchsia-300">2,000+ Flows</span>
+            </div>
+            <h4 className="text-xs font-bold text-white group-hover:text-fuchsia-300">
+              Autonomous Workflow Studio
+            </h4>
+            <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+              N8N-compatible multi-agent trigger & triage pipelines with webhook simulation.
+            </p>
+          </div>
+
+          <div
+            onClick={() => setActiveTab('copilot')}
+            className="p-4 rounded-xl bg-[#06111F] border border-[rgba(148,163,184,0.15)] hover:border-purple-500/60 cursor-pointer transition-all group"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-lg bg-purple-950/60 text-purple-400 border border-purple-500/30">
+                <Sparkles className="w-4 h-4" />
+              </div>
+              <span className="text-[10px] font-mono text-purple-300">Granite 34B</span>
+            </div>
+            <h4 className="text-xs font-bold text-white group-hover:text-purple-300">
+              AI Copilot & Multi-Model Hub
+            </h4>
+            <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+              Interactive code advisory, PDF §8 master prompts, and model benchmark matrix.
+            </p>
+          </div>
+
+          <div
+            onClick={() => setActiveTab('documents')}
+            className="p-4 rounded-xl bg-[#06111F] border border-[rgba(148,163,184,0.15)] hover:border-emerald-500/60 cursor-pointer transition-all group"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-lg bg-emerald-950/60 text-emerald-400 border border-emerald-500/30">
+                <BookOpen className="w-4 h-4" />
+              </div>
+              <span className="text-[10px] font-mono text-emerald-300">0% Drift</span>
+            </div>
+            <h4 className="text-xs font-bold text-white group-hover:text-emerald-300">
+              DocuMind Spec Guard
+            </h4>
+            <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+              PDF architecture understanding, OpenAPI RAG chunking, and spec adherence.
+            </p>
+          </div>
+
+          <div
+            onClick={() => setActiveTab('system_design')}
+            className="p-4 rounded-xl bg-[#06111F] border border-[rgba(148,163,184,0.15)] hover:border-sky-500/60 cursor-pointer transition-all group"
+          >
+            <div className="flex items-center justify-between mb-2">
+              <div className="p-2 rounded-lg bg-sky-950/60 text-sky-400 border border-sky-500/30">
+                <Cpu className="w-4 h-4" />
+              </div>
+              <span className="text-[10px] font-mono text-sky-300">10k PRs/Day</span>
+            </div>
+            <h4 className="text-xs font-bold text-white group-hover:text-sky-300">
+              Enterprise System Design
+            </h4>
+            <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">
+              Kafka event queues, isolated MicroVM sandboxes, and Redis AST caching.
+            </p>
           </div>
         </div>
       </div>

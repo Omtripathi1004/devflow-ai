@@ -216,3 +216,65 @@ export interface ActivityEvent {
   sourceArtifact?: string;
   type: 'INFO' | 'SUCCESS' | 'WARN' | 'ERROR' | 'CHECKPOINT';
 }
+
+export interface UserProfile {
+  id: string;
+  name: string;
+  email: string;
+  role: string;
+  avatar: string;
+  color: string;
+  createdAt: string;
+  lastLogin: string;
+  isLoggedIn: boolean;
+  preferences?: {
+    theme?: string;
+    geminiApiKey?: string;
+    selectedModel?: string;
+    notifications?: boolean;
+  };
+}
+
+export interface ChatMessage {
+  id: string;
+  role: 'user' | 'assistant' | 'system';
+  content: string;
+  timestamp: string;
+  modelUsed?: string;
+  tokensCount?: number;
+  latencyMs?: number;
+}
+
+export interface ChatSession {
+  id: string;
+  userId: string;
+  title: string;
+  createdAt: string;
+  updatedAt: string;
+  messages: ChatMessage[];
+  pinned?: boolean;
+  model: string;
+  tags?: string[];
+}
+
+export interface ProjectMilestone {
+  id: string;
+  title: string;
+  completed: boolean;
+  description: string;
+  weight: number;
+  files: string[];
+}
+
+export interface ProjectAspectProgress {
+  id: 'frontend' | 'backend' | 'database' | 'deployment' | 'security';
+  name: string;
+  icon: string;
+  percentage: number;
+  completedTasks: number;
+  totalTasks: number;
+  status: 'OPTIMAL' | 'IN_PROGRESS' | 'NEEDS_ATTENTION' | 'COMPLETED';
+  summary: string;
+  milestones: ProjectMilestone[];
+}
+

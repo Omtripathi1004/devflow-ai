@@ -13,6 +13,11 @@ import {
   Clock,
   ShieldCheck,
   Zap,
+  Menu,
+  X,
+  MessageSquare,
+  Gauge,
+  User,
 } from 'lucide-react';
 
 export const Header: React.FC = () => {
@@ -30,6 +35,11 @@ export const Header: React.FC = () => {
     stepForward,
     exportAuditReport,
     setIsJudgeModalOpen,
+    isMobileMenuOpen,
+    setIsMobileMenuOpen,
+    currentUser,
+    setActiveTab,
+    activeTab,
   } = useWorkflow();
 
   const getStatusBadge = () => {
@@ -71,11 +81,20 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="h-16 border-b border-[rgba(148,163,184,0.15)] bg-[#071522]/90 backdrop-blur-xl px-4 flex items-center justify-between sticky top-0 z-40 shadow-lg">
+    <header className="h-16 md:h-18 border-b border-[rgba(148,163,184,0.15)] bg-[#071522]/90 backdrop-blur-xl px-3 sm:px-4 flex items-center justify-between sticky top-0 z-40 shadow-lg pt-1 sm:pt-0">
       {/* Brand & Concept Identity */}
-      <div className="flex items-center gap-3">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-[1.5px] shadow-lg shadow-cyan-500/25">
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Mobile Menu Toggle Button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="lg:hidden p-2 rounded-xl bg-[#0D2135] text-cyan-300 border border-[rgba(148,163,184,0.2)] hover:bg-[#102A43] transition-colors"
+          title="Toggle Navigation Menu"
+        >
+          {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+        </button>
+
+        <div className="flex items-center gap-2 sm:gap-2.5">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-[1.5px] shadow-lg shadow-cyan-500/25 shrink-0">
             <div className="w-full h-full bg-[#06111F] rounded-[10px] flex items-center justify-center">
               <Zap className="w-5 h-5 text-cyan-400" />
             </div>
@@ -198,6 +217,52 @@ export const Header: React.FC = () => {
           title="Reset Workflow State"
         >
           <RotateCcw className="w-4 h-4" />
+        </button>
+
+        {/* Gemini Chat Quick Launch */}
+        <button
+          onClick={() => setActiveTab('gemini_chat')}
+          className={`px-2.5 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm ${
+            activeTab === 'gemini_chat'
+              ? 'bg-emerald-950 text-emerald-300 border-emerald-500/60 shadow-emerald-500/20'
+              : 'bg-[#0D2135] hover:bg-[#102A43] text-slate-300 hover:text-white border-[rgba(148,163,184,0.2)]'
+          }`}
+          title="Open Gemini 2.5 Flash Chatbot with Multi-Day History"
+        >
+          <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="hidden sm:inline">Gemini Chat</span>
+        </button>
+
+        {/* Progress Radar Quick Launch */}
+        <button
+          onClick={() => setActiveTab('project_progress')}
+          className={`px-2.5 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm ${
+            activeTab === 'project_progress'
+              ? 'bg-cyan-950 text-cyan-300 border-cyan-500/60 shadow-cyan-500/20'
+              : 'bg-[#0D2135] hover:bg-[#102A43] text-slate-300 hover:text-white border-[rgba(148,163,184,0.2)]'
+          }`}
+          title="Open Project Progress & Engineering Aspect Radar"
+        >
+          <Gauge className="w-3.5 h-3.5 text-cyan-400" />
+          <span className="hidden lg:inline">96% Progress</span>
+        </button>
+
+        {/* User Account / Profile */}
+        <button
+          onClick={() => setActiveTab('auth')}
+          className={`flex items-center gap-1.5 px-2 py-1 rounded-xl border transition-all ${
+            activeTab === 'auth'
+              ? 'bg-cyan-950/80 border-cyan-500 text-cyan-200'
+              : 'bg-[#0D2135] hover:bg-[#102A43] border-[rgba(148,163,184,0.2)] text-slate-300 hover:text-white'
+          }`}
+          title={`Active User: ${currentUser?.name || 'Engineer'} - Click to manage session & switch user`}
+        >
+          <div className="w-6 h-6 rounded-full bg-cyan-500/30 border border-cyan-400 flex items-center justify-center text-cyan-300 font-bold text-[11px]">
+            {currentUser?.name?.[0] || 'U'}
+          </div>
+          <span className="text-xs font-semibold hidden xl:inline max-w-[100px] truncate">
+            {currentUser?.name?.split(' ')[0] || 'User'}
+          </span>
         </button>
 
         {/* Judge Guided Tour CTA */}
