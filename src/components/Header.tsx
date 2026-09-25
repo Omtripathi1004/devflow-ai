@@ -4,308 +4,175 @@ import {
   Play,
   Pause,
   RotateCcw,
-  FastForward,
-  Cpu,
-  Download,
-  Award,
-  Sparkles,
-  CheckCircle2,
-  Clock,
-  ShieldCheck,
   Zap,
   Menu,
   X,
-  MessageSquare,
-  Gauge,
-  User,
+  Search,
+  Bot,
+  Award,
+  ChevronRight,
+  ShieldCheck,
+  CheckCircle2,
+  Clock,
+  Command
 } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const {
+    activeTab,
+    setActiveTab,
     workflowStatus,
     runId,
     elapsedSeconds,
-    simulationSpeed,
-    setSimulationSpeed,
-    isSimulatedAdapter,
     startDemoWorkflow,
     pauseWorkflow,
     resumeWorkflow,
     resetWorkflow,
-    stepForward,
-    exportAuditReport,
-    setIsJudgeModalOpen,
     isMobileMenuOpen,
     setIsMobileMenuOpen,
-    currentUser,
-    setActiveTab,
-    activeTab,
+    isCommandPaletteOpen,
+    setIsCommandPaletteOpen,
+    isCopilotOpen,
+    setIsCopilotOpen,
+    setIsJudgeModalOpen,
+    currentUser
   } = useWorkflow();
 
-  const getStatusBadge = () => {
-    switch (workflowStatus) {
-      case 'running':
-        return (
-          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-cyan-950/80 text-cyan-300 border border-cyan-500/40 animate-pulse">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-            RUNNING
-          </span>
-        );
-      case 'completed':
-        return (
-          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-emerald-950/80 text-emerald-400 border border-emerald-500/40">
-            <CheckCircle2 className="w-3.5 h-3.5" />
-            COMPLETED
-          </span>
-        );
-      case 'paused':
-        return (
-          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-amber-950/80 text-amber-400 border border-amber-500/40">
-            <Pause className="w-3.5 h-3.5" />
-            PAUSED
-          </span>
-        );
-      case 'failed':
-        return (
-          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-rose-950/80 text-rose-400 border border-rose-500/40">
-            FAILED
-          </span>
-        );
+  const getTabLabel = () => {
+    switch (activeTab) {
+      case 'overview':
+        return 'Overview';
+      case 'project_progress':
+        return 'Projects';
+      case 'issues':
+        return 'Tasks';
+      case 'workflows':
+        return 'Pipelines';
+      case 'copilot':
+      case 'gemini_chat':
+        return 'AI Copilot';
+      case 'repository':
+        return 'Codebase';
+      case 'system_design':
+        return 'Architecture';
+      case 'documents':
+        return 'Insights';
+      case 'tests':
+        return 'Tests';
+      case 'review':
+        return 'Code Review';
+      case 'security':
+        return 'Security';
+      case 'release':
+        return 'Deployments';
+      case 'antigravity':
+        return 'Monitoring';
+      case 'activity':
+        return 'Activity';
+      case 'auth':
+        return 'Team';
+      case 'automation':
+        return 'Integrations';
+      case 'settings':
+        return 'Settings';
       default:
-        return (
-          <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-mono font-semibold bg-slate-900 text-slate-400 border border-slate-700">
-            IDLE
-          </span>
-        );
+        return 'Workspace';
     }
   };
 
   return (
-    <header className="h-16 md:h-18 border-b border-[rgba(148,163,184,0.15)] bg-[#071522]/90 backdrop-blur-xl px-3 sm:px-4 flex items-center justify-between sticky top-0 z-40 shadow-lg pt-1 sm:pt-0">
-      {/* Brand & Concept Identity */}
-      <div className="flex items-center gap-2 sm:gap-3">
-        {/* Mobile Menu Toggle Button */}
+    <header className="h-14 bg-neutral-950 border-b border-neutral-800 px-4 flex items-center justify-between sticky top-0 z-30 select-none">
+      {/* Left: Mobile Toggle & Clean Breadcrumbs */}
+      <div className="flex items-center gap-3">
         <button
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          className="lg:hidden p-2 rounded-xl bg-[#0D2135] text-cyan-300 border border-[rgba(148,163,184,0.2)] hover:bg-[#102A43] transition-colors"
+          className="lg:hidden p-1.5 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-900 transition"
           title="Toggle Navigation Menu"
         >
-          {isMobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
+          {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
         </button>
 
-        <div className="flex items-center gap-2 sm:gap-2.5">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-blue-600 to-indigo-600 p-[1.5px] shadow-lg shadow-cyan-500/25 shrink-0">
-            <div className="w-full h-full bg-[#06111F] rounded-[10px] flex items-center justify-center">
-              <Zap className="w-5 h-5 text-cyan-400" />
-            </div>
+        <div className="flex items-center gap-2 text-xs font-mono">
+          <div className="flex items-center gap-1.5 text-neutral-400 hover:text-neutral-200 cursor-pointer" onClick={() => setActiveTab('overview')}>
+            <span className="font-bold text-white tracking-tight">DevFlow AI</span>
           </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-extrabold text-base tracking-tight text-white flex items-center gap-1">
-                DevFlow <span className="text-cyan-400">AI</span>
-              </span>
-              <span className="text-[10px] font-mono tracking-wider uppercase px-2 py-0.5 rounded-full bg-cyan-950/70 border border-cyan-500/30 text-cyan-300">
-                IBM Bob 2.0
-              </span>
-            </div>
-            <p className="text-[11px] text-[#94A3B8] font-mono hidden sm:block">
-              Autonomous Software-Maintenance Platform
-            </p>
-          </div>
-        </div>
-
-        {/* Status indicator: ● SYSTEM ONLINE */}
-        <div className="hidden lg:flex items-center gap-2.5 pl-3 border-l border-[rgba(148,163,184,0.15)]">
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-950/60 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-bold tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_8px_#10B981]" />
-            SYSTEM ONLINE
+          <ChevronRight className="w-3.5 h-3.5 text-neutral-600" />
+          <span className="text-neutral-400 hidden sm:inline">production-monorepo</span>
+          <ChevronRight className="w-3.5 h-3.5 text-neutral-600 hidden sm:inline" />
+          <span className="text-emerald-400 font-semibold px-2 py-0.5 rounded bg-emerald-950/60 border border-emerald-500/30">
+            {getTabLabel()}
           </span>
+        </div>
+      </div>
 
-          <div
-            className={`px-2 py-0.5 rounded text-[10px] font-mono flex items-center gap-1.5 ${
-              isSimulatedAdapter
-                ? 'bg-amber-950/40 border border-amber-600/30 text-amber-300'
-                : 'bg-emerald-950/40 border border-emerald-600/30 text-emerald-300'
-            }`}
-            title="Demonstration adapter running deterministic simulations. Fully modular and ready for live IBM Bob 2.0 APIs."
-          >
-            [BOB 2.0 ADAPTER: SIMULATED]
+      {/* Center: Global Search + Command Palette Trigger (Ctrl+K) */}
+      <div className="flex-1 max-w-md mx-4 hidden md:block">
+        <button
+          onClick={() => setIsCommandPaletteOpen(true)}
+          className="w-full flex items-center justify-between px-3 py-1.5 rounded-xl bg-neutral-900 hover:bg-neutral-800/80 border border-neutral-800 text-xs text-neutral-400 hover:text-neutral-200 transition shadow-inner"
+        >
+          <div className="flex items-center gap-2 truncate">
+            <Search className="w-3.5 h-3.5 text-neutral-400" />
+            <span className="truncate">Search projects, files, tasks, deployments...</span>
           </div>
-        </div>
+          <div className="flex items-center gap-1 shrink-0 ml-2">
+            <kbd className="px-1.5 py-0.5 text-[10px] font-mono text-neutral-400 bg-neutral-950 border border-neutral-800 rounded">
+              ⌘K
+            </kbd>
+          </div>
+        </button>
       </div>
 
-      {/* Center: Run ID & Elapsed Timer */}
-      <div className="hidden md:flex items-center gap-3.5 bg-[#0D2135]/80 border border-[rgba(148,163,184,0.15)] px-3 py-1.5 rounded-xl">
-        <div className="flex items-center gap-1.5 text-xs text-[#94A3B8] font-mono">
-          <span className="text-slate-500">Run:</span>
-          <span className="text-cyan-400 font-semibold">{runId}</span>
-        </div>
-        <div className="w-px h-3.5 bg-[rgba(148,163,184,0.2)]" />
-        <div className="flex items-center gap-1.5 text-xs text-[#94A3B8] font-mono">
-          <Clock className="w-3.5 h-3.5 text-slate-400" />
-          <span>{elapsedSeconds}s</span>
-        </div>
-        <div className="w-px h-3.5 bg-[rgba(148,163,184,0.2)]" />
-        {getStatusBadge()}
-      </div>
-
-      {/* Right Action Controls */}
-      <div className="flex items-center gap-2">
-        {/* Speed Selector */}
-        <div className="hidden sm:flex items-center bg-[#0A1B2D] border border-[rgba(148,163,184,0.2)] rounded-lg p-0.5 text-xs font-mono">
-          <button
-            onClick={() => setSimulationSpeed('1x')}
-            className={`px-2 py-1 rounded transition-colors ${
-              simulationSpeed === '1x' ? 'bg-cyan-500 text-[#06111F] font-bold' : 'text-[#94A3B8] hover:text-white'
-            }`}
-            title="Realistic timing (2.5s per agent stage)"
-          >
-            1x
-          </button>
-          <button
-            onClick={() => setSimulationSpeed('2x')}
-            className={`px-2 py-1 rounded transition-colors ${
-              simulationSpeed === '2x' ? 'bg-cyan-500 text-[#06111F] font-bold' : 'text-[#94A3B8] hover:text-white'
-            }`}
-            title="Fast demonstration timing (1.2s per agent stage)"
-          >
-            2x
-          </button>
-          <button
-            onClick={() => setSimulationSpeed('instant')}
-            className={`px-2 py-1 rounded transition-colors ${
-              simulationSpeed === 'instant' ? 'bg-cyan-500 text-[#06111F] font-bold' : 'text-[#94A3B8] hover:text-white'
-            }`}
-            title="Instant execution (200ms)"
-          >
-            ⚡
-          </button>
+      {/* Right Controls: Health, Copilot, Judge Tour, Profile */}
+      <div className="flex items-center gap-2.5">
+        {/* System Health */}
+        <div className="hidden lg:flex items-center gap-1.5 text-xs font-mono text-neutral-400 px-2.5 py-1 rounded-lg bg-neutral-900 border border-neutral-800">
+          <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shadow-[0_0_6px_#10B981]" />
+          <span>99.98% Health</span>
         </div>
 
-        {/* Pause/Resume buttons */}
-        {workflowStatus === 'running' ? (
-          <button
-            onClick={pauseWorkflow}
-            className="p-2 rounded-lg bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 transition-all text-xs"
-            title="Pause Workflow"
-          >
-            <Pause className="w-4 h-4" />
-          </button>
-        ) : workflowStatus === 'paused' ? (
-          <button
-            onClick={resumeWorkflow}
-            className="p-2 rounded-lg bg-cyan-500/10 hover:bg-cyan-500/20 text-cyan-400 border border-cyan-500/30 transition-all text-xs"
-            title="Resume Workflow"
-          >
-            <Play className="w-4 h-4" />
-          </button>
-        ) : null}
-
-        {/* Step Forward */}
+        {/* Mobile Search Button */}
         <button
-          onClick={stepForward}
-          className="p-2 rounded-lg bg-[#0D2135] hover:bg-[#102A43] text-slate-300 border border-[rgba(148,163,184,0.15)] transition-all text-xs hidden sm:flex items-center gap-1"
-          title="Step Forward One Stage"
+          onClick={() => setIsCommandPaletteOpen(true)}
+          className="md:hidden p-2 rounded-lg text-neutral-400 hover:text-white hover:bg-neutral-900 transition"
+          title="Open Command Palette"
         >
-          <FastForward className="w-4 h-4 text-cyan-400" />
+          <Search className="w-4 h-4" />
         </button>
 
-        {/* Reset */}
+        {/* AI Copilot Toggle Button */}
         <button
-          onClick={resetWorkflow}
-          className="p-2 rounded-lg bg-[#0D2135] hover:bg-[#102A43] text-[#94A3B8] hover:text-white border border-[rgba(148,163,184,0.15)] transition-all text-xs"
-          title="Reset Workflow State"
-        >
-          <RotateCcw className="w-4 h-4" />
-        </button>
-
-        {/* Anti-Gravity 9.5 Spec Quick Launch */}
-        <button
-          onClick={() => setActiveTab('antigravity')}
-          className={`px-2.5 py-1.5 rounded-lg border text-xs font-semibold font-mono flex items-center gap-1.5 transition-all shadow-sm ${
-            activeTab === 'antigravity'
-              ? 'bg-[#10B981]/20 text-[#10B981] border-[#10B981] shadow-[#10B981]/20'
-              : 'bg-[#0D2135] hover:bg-[#102A43] text-emerald-400 hover:text-emerald-300 border-[#10B981]/30'
+          onClick={() => setIsCopilotOpen(!isCopilotOpen)}
+          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-medium transition border ${
+            isCopilotOpen
+              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.2)]'
+              : 'bg-neutral-900 hover:bg-neutral-800 text-neutral-300 border-neutral-800 hover:border-neutral-700'
           }`}
-          title="Open Anti-Gravity 9.5/10 Linear Execution Pipeline"
+          title="Toggle Contextual AI Copilot"
         >
-          <Zap className="w-3.5 h-3.5 text-[#10B981] fill-[#10B981]" />
-          <span className="hidden md:inline">Anti-Gravity 9.5</span>
+          <Bot className="w-3.5 h-3.5 text-emerald-400" />
+          <span className="hidden sm:inline">Ask Copilot</span>
         </button>
 
-        {/* Gemini Chat Quick Launch */}
+        {/* Judge Tour Modal Button */}
         <button
-          onClick={() => setActiveTab('gemini_chat')}
-          className={`px-2.5 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm ${
-            activeTab === 'gemini_chat'
-              ? 'bg-emerald-950 text-emerald-300 border-emerald-500/60 shadow-emerald-500/20'
-              : 'bg-[#0D2135] hover:bg-[#102A43] text-slate-300 hover:text-white border-[rgba(148,163,184,0.2)]'
-          }`}
-          title="Open Gemini 2.5 Flash Chatbot with Multi-Day History"
+          onClick={() => setIsJudgeModalOpen(true)}
+          className="px-2.5 py-1.5 rounded-xl text-xs font-medium text-cyan-300 bg-cyan-950/40 hover:bg-cyan-950/80 border border-cyan-500/30 flex items-center gap-1.5 transition"
+          title="Judge Guided Tour"
         >
-          <MessageSquare className="w-3.5 h-3.5 text-emerald-400" />
-          <span className="hidden sm:inline">Gemini Chat</span>
-        </button>
-
-        {/* Progress Radar Quick Launch */}
-        <button
-          onClick={() => setActiveTab('project_progress')}
-          className={`px-2.5 py-1.5 rounded-lg border text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm ${
-            activeTab === 'project_progress'
-              ? 'bg-cyan-950 text-cyan-300 border-cyan-500/60 shadow-cyan-500/20'
-              : 'bg-[#0D2135] hover:bg-[#102A43] text-slate-300 hover:text-white border-[rgba(148,163,184,0.2)]'
-          }`}
-          title="Open Project Progress & Engineering Aspect Radar"
-        >
-          <Gauge className="w-3.5 h-3.5 text-cyan-400" />
-          <span className="hidden lg:inline">96% Progress</span>
+          <Award className="w-3.5 h-3.5 text-cyan-400" />
+          <span className="hidden sm:inline">Tour</span>
         </button>
 
         {/* User Account / Profile */}
         <button
           onClick={() => setActiveTab('auth')}
-          className={`flex items-center gap-1.5 px-2 py-1 rounded-xl border transition-all ${
-            activeTab === 'auth'
-              ? 'bg-cyan-950/80 border-cyan-500 text-cyan-200'
-              : 'bg-[#0D2135] hover:bg-[#102A43] border-[rgba(148,163,184,0.2)] text-slate-300 hover:text-white'
-          }`}
-          title={`Active User: ${currentUser?.name || 'Engineer'} - Click to manage session & switch user`}
+          className="flex items-center gap-1.5 p-1 rounded-xl hover:bg-neutral-900 border border-transparent hover:border-neutral-800 transition"
+          title={`Profile: ${currentUser?.name || 'Engineer'}`}
         >
-          <div className="w-6 h-6 rounded-full bg-cyan-500/30 border border-cyan-400 flex items-center justify-center text-cyan-300 font-bold text-[11px]">
+          <div className="w-7 h-7 rounded-full bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-xs">
             {currentUser?.name?.[0] || 'U'}
           </div>
-          <span className="text-xs font-semibold hidden xl:inline max-w-[100px] truncate">
-            {currentUser?.name?.split(' ')[0] || 'User'}
-          </span>
-        </button>
-
-        {/* Judge Guided Tour CTA */}
-        <button
-          onClick={() => setIsJudgeModalOpen(true)}
-          className="px-3 py-1.5 rounded-lg bg-gradient-to-r from-blue-900/60 to-indigo-900/60 hover:from-blue-800/80 hover:to-indigo-800/80 text-cyan-200 border border-cyan-500/30 text-xs font-semibold flex items-center gap-1.5 transition-all shadow-sm"
-          title="View Judge Guided Tour and Script"
-        >
-          <Award className="w-3.5 h-3.5 text-cyan-300" />
-          <span className="hidden sm:inline">Judge Tour</span>
-        </button>
-
-        {/* Export Report */}
-        <button
-          onClick={exportAuditReport}
-          className="p-2 rounded-lg bg-[#0D2135] hover:bg-[#102A43] text-slate-300 border border-[rgba(148,163,184,0.15)] transition-all text-xs hidden lg:flex items-center gap-1"
-          title="Export Workflow Audit Report (JSON)"
-        >
-          <Download className="w-4 h-4 text-cyan-400" />
-        </button>
-
-        {/* Primary CTA: Run Demo Workflow */}
-        <button
-          onClick={startDemoWorkflow}
-          disabled={workflowStatus === 'running'}
-          className="btn-cyber-primary text-xs sm:text-sm flex items-center gap-2 active:scale-95 disabled:opacity-50"
-        >
-          <Sparkles className="w-4 h-4 text-[#06111F]" />
-          <span>Run Demo Workflow</span>
         </button>
       </div>
     </header>

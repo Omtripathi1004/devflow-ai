@@ -76,6 +76,12 @@ interface WorkflowContextType {
   setIsFolderModalOpen: (open: boolean) => void;
   isMobileMenuOpen: boolean;
   setIsMobileMenuOpen: (open: boolean) => void;
+  isCommandPaletteOpen: boolean;
+  setIsCommandPaletteOpen: (open: boolean) => void;
+  isCopilotOpen: boolean;
+  setIsCopilotOpen: (open: boolean) => void;
+  sidebarCollapsed: boolean;
+  setSidebarCollapsed: (collapsed: boolean | ((prev: boolean) => boolean)) => void;
 
   workflowStatus: WorkflowStatus;
   currentStageId: StageId | null;
@@ -130,6 +136,20 @@ export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [isJudgeModalOpen, setIsJudgeModalOpen] = useState(false);
   const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCommandPaletteOpen, setIsCommandPaletteOpen] = useState(false);
+  const [isCopilotOpen, setIsCopilotOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        setIsCommandPaletteOpen((prev) => !prev);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   const [workflowStatus, setWorkflowStatus] = useState<WorkflowStatus>('completed');
   const [currentStageId, setCurrentStageId] = useState<StageId | null>('release');
@@ -490,6 +510,12 @@ export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setIsFolderModalOpen,
         isMobileMenuOpen,
         setIsMobileMenuOpen,
+        isCommandPaletteOpen,
+        setIsCommandPaletteOpen,
+        isCopilotOpen,
+        setIsCopilotOpen,
+        sidebarCollapsed,
+        setSidebarCollapsed,
         workflowStatus,
         currentStageId,
         runId,

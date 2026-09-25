@@ -5,6 +5,8 @@ import { SidebarNav } from './components/SidebarNav';
 import { AgentDetailDrawer } from './components/AgentDetailDrawer';
 import { JudgeTourModal } from './components/JudgeTourModal';
 import { ProjectFolderIntakeModal } from './components/ProjectFolderIntakeModal';
+import { CommandPalette } from './components/CommandPalette';
+import { DevFlowCopilotDrawer } from './components/DevFlowCopilotDrawer';
 
 import { OverviewView } from './views/OverviewView';
 import { WorkflowsView } from './views/WorkflowsView';
@@ -115,6 +117,12 @@ const MainLayout: React.FC = () => {
         isOpen={isFolderModalOpen}
         onClose={() => setIsFolderModalOpen(false)}
       />
+
+      {/* Global Command Palette (Ctrl+K / Cmd+K) */}
+      <CommandPalette />
+
+      {/* Persistent Contextual AI Copilot Drawer */}
+      <DevFlowCopilotDrawer />
     </div>
   );
 };
