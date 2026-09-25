@@ -10,10 +10,13 @@ import {
   FileEdit,
   Eye,
   ArrowRight,
+  FolderPlus,
+  Upload,
+  Globe,
 } from 'lucide-react';
 
 export const RepositoryView: React.FC = () => {
-  const { repositoryFiles, selectedFilePath, setSelectedFilePath, setActiveTab } = useWorkflow();
+  const { repositoryFiles, selectedFilePath, setSelectedFilePath, setActiveTab, setIsFolderModalOpen } = useWorkflow();
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedFolders, setExpandedFolders] = useState<Record<string, boolean>>({
     src: true,
@@ -118,14 +121,24 @@ export const RepositoryView: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-3 text-xs font-mono">
-          <div className="flex items-center gap-1.5 text-cyan-400">
-            <FileEdit className="w-4 h-4" />
-            <span>Proposed Modification</span>
-          </div>
-          <div className="flex items-center gap-1.5 text-[#94A3B8]">
-            <Eye className="w-4 h-4" />
-            <span>AST Inspected</span>
+        <div className="flex flex-wrap items-center gap-3">
+          <button
+            onClick={() => setIsFolderModalOpen(true)}
+            className="px-3.5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-[#06111F] text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-cyan-500/20 active:scale-95"
+          >
+            <FolderPlus className="w-4 h-4" />
+            <span>Open Project Folder / Git Repo</span>
+          </button>
+
+          <div className="flex items-center gap-3 text-xs font-mono">
+            <div className="flex items-center gap-1.5 text-cyan-400">
+              <FileEdit className="w-4 h-4" />
+              <span>Proposed</span>
+            </div>
+            <div className="flex items-center gap-1.5 text-[#94A3B8]">
+              <Eye className="w-4 h-4" />
+              <span>Inspected</span>
+            </div>
           </div>
         </div>
       </div>

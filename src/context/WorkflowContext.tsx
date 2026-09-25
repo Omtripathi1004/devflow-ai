@@ -71,6 +71,8 @@ interface WorkflowContextType {
   setSelectedFilePath: (path: string | null) => void;
   isJudgeModalOpen: boolean;
   setIsJudgeModalOpen: (open: boolean) => void;
+  isFolderModalOpen: boolean;
+  setIsFolderModalOpen: (open: boolean) => void;
   isMobileMenuOpen: boolean;
   setIsMobileMenuOpen: (open: boolean) => void;
 
@@ -89,6 +91,7 @@ interface WorkflowContextType {
   workflowNodes: WorkflowNode[];
   documents: DocumentItem[];
   repositoryFiles: RepositoryFile[];
+  setRepositoryFiles: React.Dispatch<React.SetStateAction<RepositoryFile[]>>;
   rootCause: RootCauseModel;
   codeChange: CodeChangeModel;
   testCenter: TestCenterModel;
@@ -124,6 +127,7 @@ export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [selectedDocId, setSelectedDocId] = useState<string | null>('doc-readme');
   const [selectedFilePath, setSelectedFilePath] = useState<string | null>('src/services/csvUploadService.ts');
   const [isJudgeModalOpen, setIsJudgeModalOpen] = useState(false);
+  const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const [workflowStatus, setWorkflowStatus] = useState<WorkflowStatus>('completed');
@@ -137,7 +141,7 @@ export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const [agents, setAgents] = useState<SpecializedAgent[]>(initialAgents);
   const [workflowNodes, setWorkflowNodes] = useState<WorkflowNode[]>(initialWorkflowNodes);
   const [documents] = useState<DocumentItem[]>(sampleDocuments);
-  const [repositoryFiles] = useState<RepositoryFile[]>(sampleRepositoryFiles);
+  const [repositoryFiles, setRepositoryFiles] = useState<RepositoryFile[]>(sampleRepositoryFiles);
   const [rootCause] = useState<RootCauseModel>(sampleRootCause);
   const [codeChange, setCodeChange] = useState<CodeChangeModel>(sampleCodeChange);
   const [testCenter, setTestCenter] = useState<TestCenterModel>(sampleTestCenter);
@@ -481,6 +485,8 @@ export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         setSelectedFilePath,
         isJudgeModalOpen,
         setIsJudgeModalOpen,
+        isFolderModalOpen,
+        setIsFolderModalOpen,
         isMobileMenuOpen,
         setIsMobileMenuOpen,
         workflowStatus,
@@ -497,6 +503,7 @@ export const WorkflowProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         workflowNodes,
         documents,
         repositoryFiles,
+        setRepositoryFiles,
         rootCause,
         codeChange,
         testCenter,

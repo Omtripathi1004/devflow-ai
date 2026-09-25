@@ -4,6 +4,7 @@ import { Header } from './components/Header';
 import { SidebarNav } from './components/SidebarNav';
 import { AgentDetailDrawer } from './components/AgentDetailDrawer';
 import { JudgeTourModal } from './components/JudgeTourModal';
+import { ProjectFolderIntakeModal } from './components/ProjectFolderIntakeModal';
 
 import { OverviewView } from './views/OverviewView';
 import { WorkflowsView } from './views/WorkflowsView';
@@ -29,7 +30,7 @@ import { GeminiChatView } from './views/GeminiChatView';
 import { AuthView } from './views/AuthView';
 
 const MainLayout: React.FC = () => {
-  const { activeTab } = useWorkflow();
+  const { activeTab, isFolderModalOpen, setIsFolderModalOpen } = useWorkflow();
 
   const renderActiveView = () => {
     switch (activeTab) {
@@ -105,6 +106,12 @@ const MainLayout: React.FC = () => {
 
       {/* Interactive 11-Step Judge Tour Modal */}
       <JudgeTourModal />
+
+      {/* Project Folder & Git Repository Intake Modal */}
+      <ProjectFolderIntakeModal
+        isOpen={isFolderModalOpen}
+        onClose={() => setIsFolderModalOpen(false)}
+      />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useWorkflow } from '../context/WorkflowContext';
 import { initialProjectProgress } from '../data/projectProgressData';
 import { ProjectAspectProgress } from '../types';
 import {
@@ -20,9 +21,12 @@ import {
   Layers,
   ChevronRight,
   TrendingUp,
+  FolderPlus,
+  Upload,
 } from 'lucide-react';
 
 export const ProjectProgressView: React.FC = () => {
+  const { setIsFolderModalOpen } = useWorkflow();
   const [aspects, setAspects] = useState<ProjectAspectProgress[]>(initialProjectProgress);
   const [selectedAspectId, setSelectedAspectId] = useState<string>('all');
   const [isScanning, setIsScanning] = useState<boolean>(false);
@@ -174,11 +178,19 @@ export const ProjectProgressView: React.FC = () => {
 
         {/* Action Controls & Scanner Button */}
         <div className="mt-6 pt-4 border-t border-[rgba(148,163,184,0.15)] flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <button
+              onClick={() => setIsFolderModalOpen(true)}
+              className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-[#06111F] text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-cyan-500/20 active:scale-95"
+            >
+              <FolderPlus className="w-4 h-4" />
+              <span>Enter / Change Project Folder</span>
+            </button>
+
             <button
               onClick={handleScanRepository}
               disabled={isScanning}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-[#06111F] text-xs font-bold flex items-center gap-2 transition-all shadow-md shadow-cyan-500/20 active:scale-95 disabled:opacity-50"
+              className="px-4 py-2 rounded-xl bg-[#0D2135] hover:bg-[#102A43] text-slate-300 hover:text-white border border-[rgba(148,163,184,0.2)] text-xs font-bold flex items-center gap-2 transition-all shadow-sm active:scale-95 disabled:opacity-50"
             >
               <Sparkles className={`w-4 h-4 ${isScanning ? 'animate-spin' : ''}`} />
               <span>{isScanning ? 'Auditing Codebase...' : 'Scan Repository Health'}</span>
